@@ -11,8 +11,11 @@ defmodule RuntimeConfig do
     end
   end
 
-  defp default("DATABASE_URL", :dev), do: "ecto://postgres:postgres@localhost/chatbot_dev"
-  defp default("DATABASE_URL", :test), do: "ecto://postgres:postgres@localhost/chatbot_test"
+  defp default("OPENAI_API_KEY", :dev), do: "OllamaNotALlama"
+  defp default("OPENAI_API_KEY", :test), do: "OllamaNotALlama"
+
+  defp default("DATABASE_URL", :dev), do: "ecto://chatbot:qwerty@localhost:5433/chatbot_dev"
+  defp default("DATABASE_URL", :test), do: "ecto://chatbot:qwerty@localhost:5433/chatbot_test"
 
   defp default("POOL_SIZE", :dev), do: "10"
   defp default("POOL_SIZE", :test), do: "#{System.schedulers_online() * 2}"
@@ -39,6 +42,20 @@ defmodule RuntimeConfig do
 
   defp default("MOCK_LLM_API", :test), do: true
   defp default("MOCK_LLM_API", _env), do: false
+
+  defp default("OPENAI_HOST", :dev), do: "69.30.85.116"
+  defp default("OPENAI_HOST", :test), do: "69.30.85.116"
+  defp default("OPENAI_PORT", :dev), do: "22184"
+  defp default("OPENAI_PORT", :test), do: "22184"
+
+  defp default("OPENAI_API_ENDPOINT", :dev),
+    do: "http://#{default("OPENAI_HOST", :dev)}:#{default("OPENAI_PORT", :dev)}/api/chat"
+
+  defp default("OPENAI_API_ENDPOINT", :test),
+    do: "http://#{default("OPENAI_HOST", :test)}:#{default("OPENAI_PORT", :test)}/api/chat"
+
+  defp default("OPENAI_MODEL", :dev), do: "devstral:24b"
+  defp default("OPENAI_MODEL", :test), do: "devstral:24b"
 
   defp default(key, env),
     do: raise("environment variable #{key} not set and no default for #{inspect(env)}")
@@ -75,6 +92,11 @@ config :chatbot, ChatbotWeb.Endpoint,
 
 config :chatbot, :dns_cluster_query, RuntimeConfig.get("DNS_CLUSTER_QUERY")
 
-config :langchain, openai_key: "your key"
+# config :langchain, openai_key: "your key"
+config :langchain, openai_key: RuntimeConfig.get("OPENAI_API_KEY")
+# config :chatbot, :mock_llm_api, RuntimeConfig.get("MOCK_LLM_API", cast: :boolean)
 
-config :chatbot, :mock_llm_api, RuntimeConfig.get("MOCK_LLM_API", cast: :boolean)
+config :chatbot, :mock_llm_api, false
+
+config :chatbot, :openai_api_endpoint, RuntimeConfig.get("OPENAI_API_ENDPOINT")
+config :chatbot, :openai_model, RuntimeConfig.get("OPENAI_MODEL")

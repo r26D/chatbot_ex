@@ -3,7 +3,8 @@ defmodule Chatbot.Chat do
   Context for chat related functions.
   """
   import Ecto.Query, only: [from: 2]
-  alias Chatbot.{Chat.Message, LLMMock, Repo}
+  alias Chatbot.{Chat.Message, Repo}
+  # alias Chatbot.LLMMock
   alias LangChain.Chains.LLMChain
   # There is currently a bug in the LangChain type specs:
   # `add_callback/2` expects a map with all possible handler functions.
@@ -27,13 +28,22 @@ defmodule Chatbot.Chat do
     |> Repo.update!()
   end
 
-  @llm LangChain.ChatModels.ChatOllamaAI.new!(%{
-         model: "llama3.2:latest",
-         stream: false
-       })
+  defp llm do
+    IO.inspect(Application.get_env(:chatbot, :openai_api_endpoint), label: "openai_api_endpoint")
+    IO.inspect(Application.get_env(:chatbot, :openai_model), label: "openai_model")
 
-  @chain LLMChain.new!(%{llm: @llm})
-         |> LLMChain.add_message(LangChain.Message.new_system!("You are a helpful assistant."))
+    LangChain.ChatModels.ChatOllamaAI.new!(%{
+      endpoint: Application.get_env(:chatbot, :openai_api_endpoint),
+      model: Application.get_env(:chatbot, :openai_model),
+      receive_timeout: 60_000,
+      stream: false
+    })
+  end
+
+  defp chain do
+    LLMChain.new!(%{llm: llm()})
+    |> LLMChain.add_message(LangChain.Message.new_system!("You are a helpful assistant."))
+  end
 
   @doc """
   Sends a query containing the given messages to the LLM and
@@ -46,11 +56,12 @@ defmodule Chatbot.Chat do
 
     messages = Enum.map(messages, &to_langchain_message/1)
 
-    @chain
+    chain()
     |> LLMChain.add_messages(messages)
     |> LLMChain.run()
     |> case do
       {:ok, _chain, response} ->
+        IO.puts("response.content: #{response.content}")
         create_message(%{role: :assistant, content: response.content})
 
       _error ->
@@ -84,9 +95,9 @@ defmodule Chatbot.Chat do
     Task.Supervisor.start_child(Chatbot.TaskSupervisor, fn ->
       maybe_mock_llm(stream: true)
 
-      @chain
+      chain()
       |> LLMChain.add_callback(handler)
-      |> LLMChain.add_llm_callback(handler)
+      |> LLMChain.add_callback(handler)
       |> LLMChain.add_messages(messages)
       |> LLMChain.run()
     end)
@@ -100,8 +111,9 @@ defmodule Chatbot.Chat do
   defp to_langchain_message(%{role: :assistant, content: content}),
     do: LangChain.Message.new_assistant!(content)
 
-  defp maybe_mock_llm(opts \\ []) do
-    if Application.fetch_env!(:chatbot, :mock_llm_api), do: LLMMock.mock(opts)
+  defp maybe_mock_llm(_opts \\ []) do
+    # if Application.fetch_env!(:chatbot, :mock_llm_api), do: LLMMock.mock(opts)
+    :error
   end
 
   @doc """

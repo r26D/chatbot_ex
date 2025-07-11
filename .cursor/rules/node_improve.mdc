@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+## NodeJS Rules
+
+- **Rules:**
+    - Do not use npx or npm - only use pnpm to install packages and run tasks.
+    - Don't use Date.now() always use new UTCDate();
+    - don't import react-router-dom only import react-router - as of v7 this is the prefferred way.

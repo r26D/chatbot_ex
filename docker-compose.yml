@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:17.5
+    command: postgres -N 100 -B "1024MB"  -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=200
+    environment:
+      - DEBUG=1
+      - PGDATA=/var/lib/postgresql/data/chatbot_pgdata
+      - POSTGRES_USER=chatbot
+      - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_DB=chatbot_dev
+    volumes:
+      - type: volume
+        source: chatbot_postgresql_17
+        target: /var/lib/postgresql/data/chatbot_pgdata
+    ports:
+      - 5433:5432
+
+volumes:
+  chatbot_postgresql_17:

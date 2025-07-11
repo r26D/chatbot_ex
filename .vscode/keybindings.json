@@ -1,0 +1,118 @@
+// You have to copy this to  ~/.config/Cursor/keybindings.json
+[
+  {
+    "key": "ctrl+t 1",
+    "command": "workbench.action.tasks.runTask",
+    "args": "new_adr"
+  },
+  {
+    "key": "ctrl+t 2",
+    "command": "workbench.action.tasks.runTask",
+    "args": "new_ddr"
+  },
+  {
+    "key": "ctrl+t c",
+    "command": "workbench.action.tasks.runTask",
+    "args": "compile"
+  },
+  {
+    "key": "ctrl+t a",
+    "command": "workbench.action.tasks.runTask",
+    "args": "test all"
+  },
+  {
+    "key": "ctrl+t f",
+    "command": "workbench.action.tasks.runTask",
+    "args": "test current file"
+  },
+  {
+    "key": "ctrl+t l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "test current line"
+  },
+  {
+    "key": "ctrl+t d",
+    "command": "workbench.action.tasks.runTask",
+    "args": "debug current line"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "composerMode.agent"
+  },
+  {
+    "key": "f9",
+    "command": "-editor.debug.action.toggleBreakpoint",
+    "when": "debuggersAvailable && disassemblyViewFocus || debuggersAvailable && editorTextFocus"
+  },
+  {
+    "key": "ctrl+; c",
+    "command": "-testing.runAtCursor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "f10",
+    "command": "-extension.node-debug.startWithStopOnEntry",
+    "when": "!inDebugMode && debugConfigurationType == 'node' || !inDebugMode && debugConfigurationType == 'pwa-extensionHost' || !inDebugMode && debugConfigurationType == 'pwa-node'"
+  },
+  {
+    "key": "f10",
+    "command": "-workbench.action.debug.stepOver",
+    "when": "debugState == 'stopped'"
+  },
+  {
+    "key": "ctrl+; ctrl+shift+f",
+    "command": "-testing.coverageCurrentFile",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "f4",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "ctrl+w",
+    "command": "-workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "f10",
+    "command": "testing.runCurrentFile",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "f9",
+    "command": "testing.runAtCursor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "f9",
+    "command": "-sortLines.sortLines",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; ctrl+shift+c",
+    "command": "-testing.coverageAtCursor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+t r",
+    "command": "workbench.action.tasks.reRunTask"
+  },
+  {
+    "key": "ctrl+shift+alt+c",
+    "command": "-copyRelativeFilePath",
+    "when": "!editorFocus"
+  },
+  {
+    "key": "ctrl+shift+alt+c",
+    "command": "editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+  },
+  {
+    "key": "ctrl+alt+l",
+    "command": "-editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "composerMode.agent"
+  }
+]

@@ -43,19 +43,19 @@ defmodule RuntimeConfig do
   defp default("MOCK_LLM_API", :test), do: true
   defp default("MOCK_LLM_API", _env), do: false
 
-  defp default("OPENAI_HOST", :dev), do: "69.30.85.116"
-  defp default("OPENAI_HOST", :test), do: "69.30.85.116"
-  defp default("OPENAI_PORT", :dev), do: "22184"
-  defp default("OPENAI_PORT", :test), do: "22184"
+  defp default("OPENAI_HOST", :dev), do: "127.0.0.1"
+  defp default("OPENAI_HOST", :test), do: "127.0.0.1"
+  defp default("OPENAI_PORT", :dev), do: "11434"
+  defp default("OPENAI_PORT", :test), do: "11434"
 
   defp default("OPENAI_API_ENDPOINT", :dev),
-    do: "http://#{default("OPENAI_HOST", :dev)}:#{default("OPENAI_PORT", :dev)}/api/chat"
+    do: "http://#{get("OPENAI_HOST")}:#{get("OPENAI_PORT")}/api/chat"
 
   defp default("OPENAI_API_ENDPOINT", :test),
-    do: "http://#{default("OPENAI_HOST", :test)}:#{default("OPENAI_PORT", :test)}/api/chat"
+    do: "http://#{get("OPENAI_HOST")}:#{get("OPENAI_PORT")}/api/chat"
 
-  defp default("OPENAI_MODEL", :dev), do: "devstral:24b"
-  defp default("OPENAI_MODEL", :test), do: "devstral:24b"
+  defp default("OPENAI_MODEL", :dev), do: "qwen3:8b"
+  defp default("OPENAI_MODEL", :test), do: "qwen3:8b"
 
   defp default(key, env),
     do: raise("environment variable #{key} not set and no default for #{inspect(env)}")

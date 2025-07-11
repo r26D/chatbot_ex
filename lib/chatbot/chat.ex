@@ -61,7 +61,6 @@ defmodule Chatbot.Chat do
     |> LLMChain.run()
     |> case do
       {:ok, _chain, response} ->
-        IO.puts("response.content: #{response.content}")
         create_message(%{role: :assistant, content: response.content})
 
       _error ->

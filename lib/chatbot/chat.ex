@@ -88,6 +88,7 @@ defmodule Chatbot.Chat do
 
     chain()
     |> LLMChain.add_callback(handler)
+    # |> LLMChain.add_llm_callback(handler)
     |> LLMChain.add_messages(messages)
     |> LLMChain.run()
   end

@@ -2,7 +2,9 @@ defmodule ChatbotWeb.ChatLive do
   use ChatbotWeb, :live_view
   import ChatbotWeb.CoreComponents
   import BitcrowdEcto.Random, only: [uuid: 0]
+
   alias Chatbot.Chat
+
   alias Phoenix.PubSub
 
   @impl Phoenix.LiveView
